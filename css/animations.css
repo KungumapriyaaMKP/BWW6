@@ -1,0 +1,155 @@
+/* =====================================================================
+   THE TAMIL WEDDING EXPERIENCE — animations.css
+   Keyframes · text splitting · reveal helpers · reduced-motion
+   ===================================================================== */
+
+/* ---------- 1. Keyframes (referenced by style.css) ---------- */
+@keyframes soundBar {
+  0%, 100% { height: 3px; opacity: .7; }
+  50% { height: 13px; opacity: 1; }
+}
+.sound-toggle.is-playing .sound-bars i:nth-child(1) { animation-duration: .95s; animation-delay: 0s; }
+.sound-toggle.is-playing .sound-bars i:nth-child(2) { animation-duration: .8s;  animation-delay: .18s; }
+.sound-toggle.is-playing .sound-bars i:nth-child(3) { animation-duration: 1.05s; animation-delay: .35s; }
+.sound-toggle.is-playing .sound-bars i:nth-child(4) { animation-duration: .88s; animation-delay: .12s; }
+.sound-toggle.is-playing .sound-bars i:nth-child(5) { animation-duration: 1.1s; animation-delay: .28s; }
+
+@keyframes scrollLine {
+  0%   { transform: translateY(-110%); opacity: 0; }
+  25%  { opacity: 1; }
+  75%  { opacity: 1; }
+  100% { transform: translateY(260%); opacity: 0; }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(5px); }
+}
+
+@keyframes hintLine {
+  0%   { transform: translateX(-100%); }
+  60%  { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: .88; }
+  50%      { transform: scale(1.06); opacity: 1; }
+}
+
+@keyframes diyaFlicker {
+  0%, 100% { transform: scaleY(1) scaleX(1); opacity: .92; }
+  30%      { transform: scaleY(1.08) scaleX(.95); opacity: 1; }
+  60%      { transform: scaleY(.95) scaleX(1.03); opacity: .86; }
+  85%      { transform: scaleY(1.05) scaleX(.97); opacity: .98; }
+}
+
+/* ---------- 2. Custom Text Splitting ---------- */
+.split-clip {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* Extra padding avoids clipping descenders and Tamil vowel signs */
+  padding-top: .08em;
+  padding-bottom: .16em;
+  margin-top: -.08em;
+  margin-bottom: -.16em;
+}
+.split-inner {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* ---------- 3. Intro & Doorway Details ---------- */
+.intro.is-leaving {
+  pointer-events: none;
+}
+.doorway-inner-light {
+  will-change: opacity, transform;
+}
+.invite {
+  will-change: opacity, transform;
+}
+.lamp .flame {
+  will-change: transform, opacity;
+}
+
+/* ---------- 4. Cultural Exhibition Transitions ---------- */
+.exhibit-media {
+  transition: clip-path 1s var(--ease-io);
+  will-change: clip-path;
+}
+.exhibit-media img {
+  transform: scale(1.08);
+  transition: transform 1.4s var(--ease-out);
+  will-change: transform;
+}
+.exhibit.is-active .exhibit-media img {
+  transform: scale(1);
+}
+
+/* ---------- 5. Scroll-Triggered Reveal Helpers ---------- */
+.chapter-mask,
+.person-mask,
+.ritual-mask,
+.venue-mask,
+.g-mask {
+  will-change: clip-path;
+}
+
+.chapter-mask img,
+.person-mask img,
+.ritual-mask img,
+.venue-mask img,
+.g-mask img {
+  will-change: transform;
+}
+
+/* Closing temple lamps flicker */
+.closing-lamp-flame {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: diyaFlicker 2.8s ease-in-out infinite;
+}
+.closing-lamp-flame:nth-of-type(2n) { animation-duration: 2.3s; animation-delay: -.7s; }
+.closing-lamp-flame:nth-of-type(3n) { animation-duration: 3.1s; animation-delay: -1.3s; }
+
+/* ---------- 6. Lightbox & Menu ---------- */
+.lightbox {
+  opacity: 0;
+  transition: opacity .45s var(--ease-out);
+}
+.lightbox.is-open {
+  opacity: 1;
+}
+.lightbox-figure {
+  transform: scale(.96);
+  transition: transform .55s var(--ease-out);
+}
+.lightbox.is-open .lightbox-figure {
+  transform: scale(1);
+}
+
+/* ---------- 7. Countdown Digits ---------- */
+.digit-face {
+  will-change: transform, opacity;
+}
+.digit-face--next {
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+/* ---------- 8. Reduced Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .cursor { display: none !important; }
+  .has-cursor, .has-cursor a, .has-cursor button { cursor: auto !important; }
+  .exhibit-media img { transform: none !important; }
+  .closing-glow { animation: none !important; }
+  .scroll-cue-line i, .scroll-cue svg, .story-hint i::after { animation: none !important; }
+}
