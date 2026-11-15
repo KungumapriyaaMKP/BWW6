@@ -228,9 +228,9 @@
           <span class="btn-label">Enter the Celebration</span>
           <span class="btn-shine" aria-hidden="true"></span>
         </button>
-        <button class="intro-sound" type="button" id="introSound" aria-pressed="false">
+        <button class="intro-sound" type="button" id="introSound" aria-pressed="true">
           <span class="intro-sound-dot" aria-hidden="true"></span>
-          <span class="intro-sound-label">Enter with music: <b>Off</b></span>
+          <span class="intro-sound-label">Enter with music: <b>On</b></span>
         </button>
       </div>
     </div>
@@ -265,7 +265,7 @@
       <a href="#story" data-nav>Our Story</a>
       <a href="#celebrations" data-nav>Celebrations</a>
       <a href="#gallery" data-nav>Gallery</a>
-      <a href="#rsvp" data-nav class="nav-rsvp">RSVP</a>
+      <a href="#venue" data-nav class="nav-rsvp">Venue</a>
     </nav>
     <button class="nav-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
       <span></span><span></span>
@@ -280,19 +280,18 @@
       <a href="#story" data-nav><small>02</small><span>Our Story</span></a>
       <a href="#celebrations" data-nav><small>03</small><span>Celebrations</span></a>
       <a href="#gallery" data-nav><small>04</small><span>Gallery</span></a>
-      <a href="#rsvp" data-nav><small>05</small><span>RSVP</span></a>
+      <a href="#venue" data-nav><small>05</small><span>Venue</span></a>
     </nav>
     <p class="menu-foot" lang="ta">இருமனம் இணையும் இனிய தருணம்</p>
   </div>
 
   <!-- Music toggle -->
-  <button class="sound-toggle" type="button" id="soundToggle" aria-pressed="false" aria-label="Play traditional music">
+  <button class="sound-toggle" type="button" id="soundToggle" aria-pressed="false" aria-label="Play background music">
     <span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
     <span class="sound-text">Sound</span>
   </button>
-  <audio id="weddingAudio" preload="none" loop>
-    <!-- ✏️ EDIT: place your royalty-free Nadaswaram track here -->
-    <source src="assets/audio/nadaswaram.mp3" type="audio/mpeg" />
+  <audio id="weddingAudio" preload="metadata" loop>
+    <source src="assets/audio/bg-music.mp3" type="audio/mpeg" />
   </audio>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -651,67 +650,6 @@
     </section>
 
     <!-- ============================================================
-         CULTURAL HERITAGE
-         ============================================================ -->
-    <section class="culture" id="culture" aria-labelledby="culture-title">
-      <div class="culture-pin">
-        <header class="culture-head">
-          <p class="eyebrow eyebrow--gold">An Exhibition · <span lang="ta">மரபின் வேர்கள்</span></p>
-          <h2 class="section-title" id="culture-title" data-reveal="split">Rooted in Tradition</h2>
-        </header>
-
-        <div class="culture-list" role="list">
-          <article class="exhibit is-active" role="listitem" data-index="0">
-            <button class="exhibit-name" type="button"><small>I</small>Kolam <span lang="ta">கோலம்</span></button>
-            <figure class="exhibit-media"><img src="assets/images/culture-kolam.webp" alt="A white rice-flour kolam drawn at a doorstep with marigold petals" loading="lazy" width="1024" height="1024" /></figure>
-            <div class="exhibit-text"><p class="exhibit-no">Exhibit No. 01</p><h3>Kolam</h3><p>Drawn at dawn with rice flour, the kolam welcomes prosperity and feeds the ants and birds — a daily act of generosity traced in white geometry.</p></div>
-          </article>
-          <article class="exhibit" role="listitem" data-index="1">
-            <button class="exhibit-name" type="button"><small>II</small>Kuthu Vilakku <span lang="ta">குத்துவிளக்கு</span></button>
-            <figure class="exhibit-media"><img src="assets/images/culture-vilakku.webp" alt="A tall brass kuthu vilakku with five lit wicks" loading="lazy" width="1024" height="1024" /></figure>
-            <div class="exhibit-text"><p class="exhibit-no">Exhibit No. 02</p><h3>Kuthu Vilakku</h3><p>The five-faced brass lamp is lit to begin every auspicious occasion. Its flames represent love, intelligence, patience, determination and togetherness.</p></div>
-          </article>
-          <article class="exhibit" role="listitem" data-index="2">
-            <button class="exhibit-name" type="button"><small>III</small>Nadaswaram <span lang="ta">நாதஸ்வரம்</span></button>
-            <figure class="exhibit-media"><img src="assets/images/culture-nadaswaram.webp" alt="A nadaswaram and thavil resting on silk cloth" loading="lazy" width="1024" height="1024" /></figure>
-            <div class="exhibit-text"><p class="exhibit-no">Exhibit No. 03</p><h3>Nadaswaram</h3><p>Called the "mangala vadyam", the auspicious instrument. Its soaring voice announces the wedding to the whole street — and to the heavens.</p></div>
-          </article>
-          <article class="exhibit" role="listitem" data-index="3">
-            <button class="exhibit-name" type="button"><small>IV</small>Thavil <span lang="ta">தவில்</span></button>
-            <figure class="exhibit-media"><img src="assets/images/culture-nadaswaram.webp" alt="The thavil barrel drum beside a nadaswaram" loading="lazy" width="1024" height="1024" style="object-position: 70% 50%" /></figure>
-            <div class="exhibit-text"><p class="exhibit-no">Exhibit No. 04</p><h3>Thavil</h3><p>The thunderous barrel drum and the nadaswaram's eternal companion. At the moment of the thali, the "getti melam" crescendo drowns every other sound.</p></div>
-          </article>
-          <article class="exhibit" role="listitem" data-index="4">
-            <button class="exhibit-name" type="button"><small>V</small>Pattu Pudavai <span lang="ta">பட்டுப் புடவை</span></button>
-            <figure class="exhibit-media"><img src="assets/images/culture-saree.webp" alt="Folded Kanjeevaram silk sarees with gold zari" loading="lazy" width="1024" height="1024" /></figure>
-            <div class="exhibit-text"><p class="exhibit-no">Exhibit No. 05</p><h3>Kanjeevaram Silk</h3><p>Woven in Kanchipuram with pure mulberry silk and real zari, a wedding saree is an heirloom — often passed from grandmother to granddaughter.</p></div>
-          </article>
-          <article class="exhibit" role="listitem" data-index="5">
-            <button class="exhibit-name" type="button"><small>VI</small>Kovil <span lang="ta">கோவில்</span></button>
-            <figure class="exhibit-media"><img src="assets/images/culture-temple.webp" alt="Carved stone pillars of a Dravidian temple corridor" loading="lazy" width="1024" height="1024" /></figure>
-            <div class="exhibit-text"><p class="exhibit-no">Exhibit No. 06</p><h3>Temple Architecture</h3><p>Towering gopurams and thousand-pillared halls — Dravidian architecture shaped the mandapam itself, where couples still marry beneath carved stone.</p></div>
-          </article>
-          <article class="exhibit" role="listitem" data-index="6">
-            <button class="exhibit-name" type="button"><small>VII</small>Mallipoo <span lang="ta">மல்லிப்பூ</span></button>
-            <figure class="exhibit-media"><img src="assets/images/culture-mallipoo.webp" alt="Strings of fresh jasmine flowers on a brass plate" loading="lazy" width="1024" height="1024" /></figure>
-            <div class="exhibit-text"><p class="exhibit-no">Exhibit No. 07</p><h3>Mallipoo</h3><p>The fragrance of Madurai jasmine is the fragrance of a Tamil wedding — woven into braids, garlands and the mandapam itself.</p></div>
-          </article>
-          <article class="exhibit" role="listitem" data-index="7">
-            <button class="exhibit-name" type="button"><small>VIII</small>Thamboolam <span lang="ta">தாம்பூலம்</span></button>
-            <figure class="exhibit-media"><img src="assets/images/culture-thamboolam.webp" alt="A brass thamboolam plate of betel leaves, areca nuts, banana and coconut" loading="lazy" width="1024" height="1024" /></figure>
-            <div class="exhibit-text"><p class="exhibit-no">Exhibit No. 08</p><h3>Thamboolam</h3><p>Betel leaves, areca nut, turmeric, kumkum and fruit — offered to every guest as a blessing and a thank-you for gracing the occasion.</p></div>
-          </article>
-          <article class="exhibit" role="listitem" data-index="8">
-            <button class="exhibit-name" type="button"><small>IX</small>Sadangu <span lang="ta">சடங்குகள்</span></button>
-            <figure class="exhibit-media"><img src="assets/images/event-muhurtham.webp" alt="Wedding rituals around the sacred fire" loading="lazy" width="1536" height="1024" /></figure>
-            <div class="exhibit-text"><p class="exhibit-no">Exhibit No. 09</p><h3>The Rituals</h3><p>Kasi Yatra, Oonjal, Kanyadaanam, Mangalya Dharanam, Saptapadi — each rite a chapter of meaning, performed exactly as generations before us.</p></div>
-          </article>
-        </div>
-        <div class="culture-progress" aria-hidden="true"><span class="culture-count"><b>01</b> / 09</span><i><em></em></i></div>
-      </div>
-    </section>
-
-    <!-- ============================================================
          GALLERY
          ============================================================ -->
     <section class="gallery" id="gallery" aria-labelledby="gallery-title">
@@ -770,87 +708,6 @@
     </section>
 
     <!-- ============================================================
-         RSVP
-         ============================================================ -->
-    <section class="rsvp" id="rsvp" aria-labelledby="rsvp-title">
-      <div class="temple-border temple-border--top" aria-hidden="true"></div>
-      <div class="rsvp-layout">
-        <div class="rsvp-intro">
-          <p class="eyebrow eyebrow--gold">Join Our Celebration · RSVP</p>
-          <h2 class="section-title" id="rsvp-title" data-reveal="split">Your Presence Is Our Greatest Gift</h2>
-          <p class="section-tamil" lang="ta">உங்கள் வருகையே எங்கள் பெரும் பரிசு</p>
-          <p class="rsvp-deadline">Kindly respond by <strong data-bind="rsvp.deadline">25 January 2027</strong></p>
-        </div>
-
-        <div class="rsvp-card">
-          <form class="rsvp-form" id="rsvpForm" novalidate>
-            <div class="field">
-              <input type="text" id="guestName" name="name" autocomplete="name" required minlength="2" maxlength="80" placeholder=" " />
-              <label for="guestName">Your name</label>
-              <p class="field-error" id="guestName-error" role="alert"></p>
-            </div>
-            <div class="field">
-              <input type="tel" id="guestPhone" name="phone" autocomplete="tel" inputmode="tel" maxlength="20" placeholder=" " />
-              <label for="guestPhone">Phone number <em>(optional)</em></label>
-              <p class="field-error" id="guestPhone-error" role="alert"></p>
-            </div>
-
-            <fieldset class="field field--choice">
-              <legend>Will you be attending?</legend>
-              <div class="choice-group">
-                <label class="choice"><input type="radio" name="attending" value="yes" required /><span>Joyfully accept</span></label>
-                <label class="choice"><input type="radio" name="attending" value="no" /><span>Regretfully decline</span></label>
-              </div>
-              <p class="field-error" id="attending-error" role="alert"></p>
-            </fieldset>
-
-            <div class="field field--stepper" id="guestsField">
-              <span class="stepper-label" id="guestsLabel">Number of guests</span>
-              <div class="stepper" role="group" aria-labelledby="guestsLabel">
-                <button type="button" class="stepper-btn" data-step="-1" aria-label="Fewer guests">−</button>
-                <input type="number" id="guestCount" name="guests" min="1" max="10" value="1" aria-labelledby="guestsLabel" />
-                <button type="button" class="stepper-btn" data-step="1" aria-label="More guests">+</button>
-              </div>
-              <p class="field-error" id="guestCount-error" role="alert"></p>
-            </div>
-
-            <div class="field">
-              <textarea id="guestMessage" name="message" rows="3" maxlength="500" placeholder=" "></textarea>
-              <label for="guestMessage">A message for the couple</label>
-              <p class="field-hint"><span id="msgCount">0</span>/500</p>
-            </div>
-
-            <!-- honeypot -->
-            <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
-
-            <button class="btn btn--gold rsvp-submit" type="submit">
-              <span class="btn-label">Confirm Attendance</span>
-              <span class="btn-shine" aria-hidden="true"></span>
-            </button>
-            <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
-          </form>
-
-          <div class="rsvp-thanks" id="rsvpThanks" hidden tabindex="-1">
-            <svg class="thanks-lotus" viewBox="0 0 160 110" aria-hidden="true">
-              <g fill="none" stroke="url(#gold)" stroke-width="1.3" stroke-linecap="round">
-                <path d="M80 100 C62 80 62 50 80 24 C98 50 98 80 80 100Z" />
-                <path d="M80 100 C56 94 42 70 48 46 C64 56 76 76 80 100Z" />
-                <path d="M80 100 C104 94 118 70 112 46 C96 56 84 76 80 100Z" />
-                <path d="M80 100 C50 104 26 92 16 74 C38 70 64 82 80 100Z" />
-                <path d="M80 100 C110 104 134 92 144 74 C122 70 96 82 80 100Z" />
-              </g>
-            </svg>
-            <h3 class="thanks-title" id="thanksTitle">நன்றி · Thank you</h3>
-            <p class="thanks-msg" id="thanksMsg"></p>
-            <p class="thanks-note" id="thanksNote"></p>
-            <a class="btn btn--line thanks-wa" id="thanksWhatsapp" href="#" target="_blank" rel="noopener" hidden><span class="btn-label">Send via WhatsApp</span><span aria-hidden="true">→</span></a>
-            <button class="link-gold thanks-again" type="button" id="rsvpAgain">Submit another response</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================
          CLOSING
          ============================================================ -->
     <section class="closing" id="closing" aria-label="Closing blessing">
@@ -872,7 +729,7 @@
       </div>
       <footer class="closing-foot">
         <svg class="divider" viewBox="0 0 320 24" aria-hidden="true"><use href="#ornament-divider" /></svg>
-        <p class="made-with-love">Made with love</p>
+        <p class="made-with-love">Invite made with love by <a class="made-with-love-link" href="https://www.instagram.com/sumya.web.studio/" target="_blank" rel="noopener noreferrer">Sumya Web Studio</a></p>
         <a class="back-top link-gold" href="#home">Back to the beginning ↑</a>
       </footer>
     </section>

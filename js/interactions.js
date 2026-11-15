@@ -1,6 +1,6 @@
 /* =====================================================================
    THE TAMIL WEDDING EXPERIENCE — interactions.js
-   Countdown · Calendar · Nav & Mobile Menu · Audio · Lightbox · Map · RSVP
+   Countdown · Calendar · Nav & Mobile Menu · Audio · Lightbox · Map
    ===================================================================== */
 (function () {
   'use strict';
@@ -295,7 +295,7 @@
     }
   }
 
-  /* ---------- 4. Audio Experience (Nadaswaram + Web Audio Fallback) ---------- */
+  /* ---------- 4. Audio Experience (Background Track + Web Audio Fallback) ---------- */
   function initAudio() {
     const toggleBtn = document.getElementById('soundToggle');
     const toggleText = toggleBtn?.querySelector('.sound-text');
@@ -305,7 +305,7 @@
     if (!toggleBtn || !audioEl) return;
 
     const SESSION_KEY = 'tamilWeddingMusic';
-    let wantMusic = sessionStorage.getItem(SESSION_KEY) === 'on';
+    let wantMusic = sessionStorage.getItem(SESSION_KEY) !== 'off';
     let isPlaying = false;
     let usingSynth = false;
     let synthCtrl = null;
@@ -392,7 +392,7 @@
     function syncUI() {
       toggleBtn.classList.toggle('is-playing', isPlaying);
       toggleBtn.setAttribute('aria-pressed', String(isPlaying));
-      toggleBtn.setAttribute('aria-label', isPlaying ? 'Mute traditional music' : 'Play traditional music');
+      toggleBtn.setAttribute('aria-label', isPlaying ? 'Mute background music' : 'Play background music');
       if (toggleText) toggleText.textContent = isPlaying ? 'Playing' : 'Sound';
 
       if (introSoundBtn) {
@@ -414,11 +414,17 @@
               audioEl.load();
             }
           }
+          audioEl.volume = 0.65;
           await audioEl.play();
           isPlaying = true;
           syncUI();
           return;
-        } catch (_) {
+        } catch (err) {
+          if (err && (err.name === 'NotAllowedError' || err.name === 'AbortError')) {
+            isPlaying = false;
+            syncUI();
+            return;
+          }
           // Audio file missing or unplayable — fall back seamlessly to Carnatic synthesis
           usingSynth = true;
         }
@@ -429,7 +435,7 @@
         synthCtrl.start();
         isPlaying = true;
         syncUI();
-        App.showToast && App.showToast('Playing ambient Carnatic raga · Add assets/audio/nadaswaram.mp3 for your custom track', 4500);
+        App.showToast && App.showToast('Playing ambient Carnatic accompaniment', 3500);
       } else {
         isPlaying = false;
         syncUI();
@@ -468,34 +474,7 @@
     });
   }
 
-  /* ---------- 5. Cultural Heritage Interactive Fallback (Tablet/Mobile + Click) ---------- */
-  function initCultureInteractive() {
-    const exhibits = Array.from(document.querySelectorAll('.exhibit'));
-    if (!exhibits.length) return;
-
-    const countEl = document.querySelector('.culture-count b');
-    const barEl = document.querySelector('.culture-progress em');
-
-    function setActive(index) {
-      exhibits.forEach((el, i) => el.classList.toggle('is-active', i === index));
-      if (countEl) countEl.textContent = String(index + 1).padStart(2, '0');
-      if (barEl) barEl.style.transform = `scaleX(${((index + 1) / exhibits.length).toFixed(4)})`;
-    }
-
-    exhibits.forEach((ex, idx) => {
-      const btn = ex.querySelector('.exhibit-name');
-      if (!btn) return;
-      btn.addEventListener('click', () => {
-        // On desktop (>1024px) with ScrollTrigger pin, animations.js scrolls to the stop;
-        // on <=1024px (or reduced motion), switch active exhibit directly.
-        if (window.innerWidth <= 1024 || reducedMotion || typeof window.ScrollTrigger === 'undefined') {
-          setActive(idx);
-        }
-      });
-    });
-  }
-
-  /* ---------- 6. Gallery Lightbox ---------- */
+  /* ---------- 5. Gallery Lightbox ---------- */
   function initLightbox() {
     const lightbox = document.getElementById('lightbox');
     if (!lightbox) return;
@@ -600,235 +579,11 @@
     });
   }
 
-  /* ---------- 8. RSVP Validation & Honest Submission ---------- */
-  function initRsvp() {
-    const form = document.getElementById('rsvpForm');
-    if (!form) return;
-
-    const nameInput = document.getElementById('guestName');
-    const phoneInput = document.getElementById('guestPhone');
-    const guestsField = document.getElementById('guestsField');
-    const guestCount = document.getElementById('guestCount');
-    const stepperBtns = Array.from(form.querySelectorAll('.stepper-btn'));
-    const messageInput = document.getElementById('guestMessage');
-    const msgCount = document.getElementById('msgCount');
-    const statusEl = document.getElementById('formStatus');
-    const submitBtn = form.querySelector('.rsvp-submit');
-
-    const thanksBox = document.getElementById('rsvpThanks');
-    const thanksMsg = document.getElementById('thanksMsg');
-    const thanksNote = document.getElementById('thanksNote');
-    const thanksWa = document.getElementById('thanksWhatsapp');
-    const againBtn = document.getElementById('rsvpAgain');
-
-    function setError(input, errId, msg) {
-      const field = input?.closest('.field');
-      const errEl = document.getElementById(errId);
-      if (errEl) errEl.textContent = msg;
-      if (field) field.classList.toggle('has-error', Boolean(msg));
-      if (input && input.setAttribute) {
-        input.setAttribute('aria-invalid', msg ? 'true' : 'false');
-      }
-    }
-
-    function updateGuestState() {
-      const choice = form.querySelector('input[name="attending"]:checked')?.value;
-      const disabled = choice === 'no';
-      guestsField?.classList.toggle('is-disabled', disabled);
-      if (guestCount) guestCount.disabled = disabled;
-      stepperBtns.forEach((b) => { b.disabled = disabled; });
-      if (disabled) setError(guestCount, 'guestCount-error', '');
-    }
-
-    form.querySelectorAll('input[name="attending"]').forEach((radio) => {
-      radio.addEventListener('change', () => {
-        setError(radio, 'attending-error', '');
-        updateGuestState();
-      });
-    });
-
-    stepperBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        if (!guestCount || guestCount.disabled) return;
-        const delta = Number(btn.dataset.step) || 0;
-        const curr = Number(guestCount.value) || 1;
-        const next = Math.max(1, Math.min(10, curr + delta));
-        guestCount.value = String(next);
-        setError(guestCount, 'guestCount-error', '');
-      });
-    });
-
-    guestCount?.addEventListener('input', () => setError(guestCount, 'guestCount-error', ''));
-    nameInput?.addEventListener('input', () => setError(nameInput, 'guestName-error', ''));
-    phoneInput?.addEventListener('input', () => setError(phoneInput, 'guestPhone-error', ''));
-
-    if (messageInput && msgCount) {
-      messageInput.addEventListener('input', () => {
-        msgCount.textContent = String(messageInput.value.length);
-      });
-    }
-
-    function validate() {
-      let firstInvalid = null;
-      const nameVal = (nameInput?.value || '').trim();
-      const phoneVal = (phoneInput?.value || '').trim();
-      const attending = form.querySelector('input[name="attending"]:checked');
-      const guestsVal = Number(guestCount?.value);
-
-      if (nameVal.length < 2) {
-        setError(nameInput, 'guestName-error', 'Please enter your full name.');
-        firstInvalid = firstInvalid || nameInput;
-      } else {
-        setError(nameInput, 'guestName-error', '');
-      }
-
-      if (phoneVal) {
-        const digits = phoneVal.replace(/[^\d]/g, '');
-        if (digits.length < 7 || digits.length > 15) {
-          setError(phoneInput, 'guestPhone-error', 'Please enter a valid phone number, or leave it blank.');
-          firstInvalid = firstInvalid || phoneInput;
-        } else {
-          setError(phoneInput, 'guestPhone-error', '');
-        }
-      } else {
-        setError(phoneInput, 'guestPhone-error', '');
-      }
-
-      if (!attending) {
-        setError(form.querySelector('input[name="attending"]'), 'attending-error', 'Please let us know if you can attend.');
-        firstInvalid = firstInvalid || form.querySelector('input[name="attending"]');
-      } else {
-        setError(attending, 'attending-error', '');
-      }
-
-      if (attending?.value === 'yes') {
-        if (!Number.isInteger(guestsVal) || guestsVal < 1 || guestsVal > 10) {
-          setError(guestCount, 'guestCount-error', 'Please choose between 1 and 10 guests.');
-          firstInvalid = firstInvalid || guestCount;
-        } else {
-          setError(guestCount, 'guestCount-error', '');
-        }
-      }
-
-      if (firstInvalid) {
-        firstInvalid.focus();
-        return null;
-      }
-
-      return {
-        name: nameVal,
-        phone: phoneVal,
-        attending: attending.value,
-        guests: attending.value === 'yes' ? guestsVal : 0,
-        message: (messageInput?.value || '').trim(),
-        submittedAt: new Date().toISOString()
-      };
-    }
-
-    function showConfirmation(payload, storedOnline) {
-      form.hidden = true;
-      thanksBox.hidden = false;
-
-      if (payload.attending === 'yes') {
-        const guestWord = payload.guests === 1 ? '1 guest' : `${payload.guests} guests`;
-        thanksMsg.textContent = `We cannot wait to celebrate with you, ${payload.name} (${guestWord}).`;
-      } else {
-        thanksMsg.textContent = `Thank you for letting us know, ${payload.name}. We will miss you and hold your warm wishes close.`;
-      }
-
-      if (storedOnline) {
-        thanksNote.textContent = 'Your RSVP has been recorded. Thank you for responding.';
-      } else {
-        thanksNote.textContent = 'Note: No Google Sheets or backend endpoint is configured in js/main.js yet, so this response was validated in your browser and not stored online.';
-      }
-
-      if (CONFIG?.rsvp?.whatsapp && thanksWa) {
-        const waDigits = CONFIG.rsvp.whatsapp.replace(/[^\d]/g, '');
-        if (waDigits) {
-          const text = [
-            `RSVP — ${CONFIG.bride.name} & ${CONFIG.groom.name}`,
-            `Name: ${payload.name}`,
-            `Attending: ${payload.attending === 'yes' ? `Yes (${payload.guests})` : 'Regretfully unable to attend'}`,
-            payload.message ? `Message: ${payload.message}` : ''
-          ].filter(Boolean).join('\n');
-          thanksWa.href = `https://wa.me/${waDigits}?text=${encodeURIComponent(text)}`;
-          thanksWa.hidden = false;
-        }
-      } else if (thanksWa) {
-        thanksWa.hidden = true;
-      }
-
-      if (gsap && !reducedMotion) {
-        gsap.fromTo(thanksBox,
-          { y: 18, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out' }
-        );
-      }
-      thanksBox.focus();
-    }
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (statusEl) {
-        statusEl.textContent = '';
-        statusEl.classList.remove('is-error');
-      }
-
-      // Honeypot check
-      if (form.website && form.website.value) return;
-
-      const payload = validate();
-      if (!payload) return;
-
-      const endpoint = (CONFIG?.rsvp?.endpoint || '').trim();
-      if (!endpoint) {
-        showConfirmation(payload, false);
-        return;
-      }
-
-      try {
-        if (submitBtn) submitBtn.disabled = true;
-        if (statusEl) statusEl.textContent = 'Sending your response…';
-
-        const res = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-        showConfirmation(payload, true);
-      } catch (_) {
-        if (statusEl) {
-          statusEl.textContent = 'Unable to reach the RSVP service right now. Please try again shortly.';
-          statusEl.classList.add('is-error');
-        }
-      } finally {
-        if (submitBtn) submitBtn.disabled = false;
-      }
-    });
-
-    againBtn?.addEventListener('click', () => {
-      form.reset();
-      if (msgCount) msgCount.textContent = '0';
-      if (statusEl) {
-        statusEl.textContent = '';
-        statusEl.classList.remove('is-error');
-      }
-      updateGuestState();
-      thanksBox.hidden = true;
-      form.hidden = false;
-      nameInput?.focus();
-    });
-  }
-
   /* ---------- Boot ---------- */
   initCountdown();
   initCalendarDownload();
   initNavigation();
   initAudio();
-  initCultureInteractive();
   initLightbox();
   initVenueMap();
-  initRsvp();
 })();

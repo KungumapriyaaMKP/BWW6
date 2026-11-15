@@ -74,20 +74,6 @@
   will-change: transform, opacity;
 }
 
-/* ---------- 4. Cultural Exhibition Transitions ---------- */
-.exhibit-media {
-  transition: clip-path 1s var(--ease-io);
-  will-change: clip-path;
-}
-.exhibit-media img {
-  transform: scale(1.08);
-  transition: transform 1.4s var(--ease-out);
-  will-change: transform;
-}
-.exhibit.is-active .exhibit-media img {
-  transform: scale(1);
-}
-
 /* ---------- 5. Scroll-Triggered Reveal Helpers ---------- */
 .chapter-mask,
 .person-mask,
@@ -149,7 +135,6 @@
   }
   .cursor { display: none !important; }
   .has-cursor, .has-cursor a, .has-cursor button { cursor: auto !important; }
-  .exhibit-media img { transform: none !important; }
   .closing-glow { animation: none !important; }
   .scroll-cue-line i, .scroll-cue svg, .story-hint i::after { animation: none !important; }
 }

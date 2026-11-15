@@ -5,13 +5,6 @@
 
 /* ---------- 1. Short Desktop Viewports ---------- */
 @media (min-width: 1025px) and (max-height: 780px) {
-  .culture-head { top: 7vh; }
-  .culture-list { top: 32vh; }
-  .exhibit-name {
-    font-size: clamp(1rem, 1.45vw, 1.35rem);
-    padding: .2rem 0;
-  }
-  .culture-progress { bottom: 5vh; }
   .chapter-media { height: min(64vh, 540px); }
 }
 
@@ -112,71 +105,6 @@
   .ritual--4 .ritual-media { grid-column: 7 / 13; }
   .ritual-illus { opacity: .75; }
 
-  /* Cultural Heritage becomes an interactive editorial accordion */
-  .culture-pin {
-    height: auto;
-    overflow: visible;
-    padding: clamp(4.5rem, 9vw, 7rem) var(--gutter);
-  }
-  .culture-pin::before { display: none; }
-  .culture-head {
-    position: static;
-    max-width: 40rem;
-    margin: 0 auto 3rem;
-    text-align: center;
-  }
-  .culture-list {
-    position: static;
-    width: 100%;
-    max-width: 48rem;
-    margin: 0 auto;
-    border-top: 1px solid rgba(196, 154, 80, .3);
-  }
-  .exhibit {
-    border-bottom: 1px solid rgba(196, 154, 80, .3);
-    padding: .6rem 0;
-  }
-  .exhibit-name {
-    padding: .85rem 0;
-    font-size: clamp(1.35rem, 3vw, 1.85rem);
-    min-height: 48px;
-  }
-  .exhibit.is-active .exhibit-name {
-    padding-left: .4rem;
-    color: var(--gold-light);
-  }
-  .exhibit-media,
-  .exhibit-text {
-    position: static;
-    width: 100%;
-    height: auto;
-    transform: none;
-    display: none;
-  }
-  .exhibit.is-active .exhibit-media {
-    display: block;
-    max-width: 24rem;
-    aspect-ratio: 4 / 5;
-    margin: 1rem auto 1.6rem;
-    clip-path: none;
-    border: 1px solid rgba(196, 154, 80, .4);
-  }
-  .exhibit.is-active .exhibit-text {
-    display: block;
-    opacity: 1;
-    visibility: visible;
-    max-width: 34rem;
-    margin: 0 auto 1.6rem;
-    text-align: center;
-    transform: none;
-  }
-  .culture-progress {
-    position: static;
-    justify-content: center;
-    margin-top: 2.5rem;
-  }
-  .culture-progress i { width: 10rem; }
-
   /* Gallery */
   .gallery-grid { grid-auto-rows: 7.2vw; gap: 1.8vw; }
 
@@ -190,14 +118,6 @@
     width: calc(100% - 2.5rem);
     max-width: 34rem;
   }
-
-  /* RSVP */
-  .rsvp-layout {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    max-width: 42rem;
-  }
-  .rsvp-intro { text-align: center; }
 }
 
 /* ---------- 3. Mobile (<= 768px) ---------- */
@@ -268,8 +188,8 @@
     gap: 1.8rem;
   }
   .chapter--alt .chapter-media { order: 0; }
-  .chapter-media { max-width: 21rem; margin-bottom: 1.8rem; }
-  .chapter-media::before { inset: -10px; }
+  .chapter-media { width: calc(100% - 16px); max-width: 21rem; margin: 0 auto 1.8rem; }
+  .chapter-media::before { inset: -8px; }
   .chapter-leaf { padding: 1.8rem 1.75rem; }
   .chapter-leaf::before { left: .6rem; }
   .chapter-leaf::after { right: .6rem; }
@@ -377,6 +297,10 @@
   .lightbox-prev { left: 1rem; top: auto; bottom: max(1.2rem, env(safe-area-inset-bottom)); margin-top: 0; }
   .lightbox-next { right: 1rem; top: auto; bottom: max(1.2rem, env(safe-area-inset-bottom)); margin-top: 0; }
 
+  /* Venue frame trim so outer border never exceeds mobile gutter */
+  .venue-media { width: calc(100% - 16px); margin-inline: auto; }
+  .venue-media::before { inset: -8px; }
+
   /* Closing */
   .closing { padding: 6rem var(--gutter) 5.5rem; }
   .closing-temple { height: 55%; }
@@ -390,6 +314,15 @@
 
 /* ---------- 4. Small Mobile (<= 480px) ---------- */
 @media (max-width: 480px) {
+  .section-head .eyebrow {
+    font-size: .62rem;
+    letter-spacing: .22em;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .35rem .65rem;
+  }
+  .section-head .eyebrow::before,
+  .section-head .eyebrow::after { width: 1.4rem; }
   .hero-corner { width: 32px; height: 32px; }
   .hero-eyebrow { letter-spacing: .16em; }
   .hero-names { font-size: clamp(2.35rem, 11vw, 3.5rem); }
@@ -402,9 +335,6 @@
   .ritual-details { grid-template-columns: 1fr; gap: 1rem; }
   .venue-card { width: 100%; padding: 2rem 1.4rem; }
   .venue-details { flex-direction: column; gap: .9rem; }
-  .choice-group { flex-direction: column; }
-  .choice span { width: 100%; justify-content: center; }
-  .rsvp-card { padding: 1.7rem 1.35rem; }
 }
 
 /* ---------- 5. Compact Screens (<= 375px) ---------- */
@@ -415,5 +345,6 @@
   .section-title { font-size: clamp(2.05rem, 9.5vw, 2.6rem); }
   .cd-value { font-size: clamp(2.6rem, 12vw, 3.2rem); }
   .person-copy { padding: 1.5rem 1.25rem; }
+  .made-with-love { letter-spacing: .16em; }
   .sound-toggle { height: 40px; padding: 0 .75rem; font-size: .6rem; letter-spacing: .18em; }
 }

@@ -133,11 +133,17 @@
   }
 
   /* ---------- 3. Fallback if GSAP unavailable or Reduced Motion ---------- */
+  function syncFallbackNav() {
+    if (!navEl) return;
+    navEl.classList.toggle('is-scrolled', (window.scrollY || 0) > 60);
+  }
+
   function unlockWithoutAnimation() {
     document.body.classList.remove('is-locked');
     if (introEl) introEl.style.display = 'none';
     if (lenis) lenis.start();
     introDone = true;
+    syncFallbackNav();
   }
 
   if (typeof window.gsap === 'undefined') {
@@ -148,9 +154,17 @@
       inviteEl.style.opacity = '1';
     }
     if (sceneEl) sceneEl.style.opacity = '0.24';
-    if (enterBtn) enterBtn.addEventListener('click', unlockWithoutAnimation);
-    if (skipBtn) skipBtn.addEventListener('click', unlockWithoutAnimation);
+    if (enterBtn) enterBtn.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('tamilwedding:enter'));
+      unlockWithoutAnimation();
+    });
+    if (skipBtn) skipBtn.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('tamilwedding:enter'));
+      unlockWithoutAnimation();
+    });
     if (!introEl) unlockWithoutAnimation();
+    window.addEventListener('scroll', syncFallbackNav, { passive: true });
+    syncFallbackNav();
     return;
   }
 
@@ -202,6 +216,7 @@
     } else {
       window.addEventListener('scroll', () => updateNav(window.scrollY || 0), { passive: true });
     }
+    updateNav(window.scrollY || 0);
   }
 
   /* ---------- 6. Hero Grand Reveal ---------- */
@@ -689,54 +704,6 @@
           }
         });
       }
-
-      // 2. Cultural Heritage Exhibition Pin
-      const culturePin = document.querySelector('.culture-pin');
-      const exhibits = Array.from(document.querySelectorAll('.exhibit'));
-      if (culturePin && exhibits.length) {
-        const countEl = document.querySelector('.culture-count b');
-        const barEl = document.querySelector('.culture-progress em');
-
-        function activateExhibit(idx) {
-          const clamped = Math.max(0, Math.min(exhibits.length - 1, idx));
-          exhibits.forEach((el, i) => el.classList.toggle('is-active', i === clamped));
-          if (countEl) countEl.textContent = String(clamped + 1).padStart(2, '0');
-          if (barEl) barEl.style.transform = `scaleX(${((clamped + 1) / exhibits.length).toFixed(4)})`;
-        }
-
-        const cultureTrigger = ScrollTrigger.create({
-          trigger: '.culture',
-          pin: culturePin,
-          start: 'top top',
-          end: () => '+=' + (exhibits.length * 420),
-          scrub: true,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const idx = Math.min(exhibits.length - 1, Math.floor(self.progress * exhibits.length));
-            activateExhibit(idx);
-          }
-        });
-
-        // Clicking an exhibit name on desktop scrolls smoothly to that exhibit's stop
-        const clickHandlers = exhibits.map((ex, idx) => {
-          const btn = ex.querySelector('.exhibit-name');
-          const handler = () => {
-            const span = cultureTrigger.end - cultureTrigger.start;
-            const targetY = cultureTrigger.start + ((idx + 0.35) / exhibits.length) * span;
-            if (lenis) {
-              lenis.scrollTo(targetY, { duration: 1.0 });
-            } else {
-              window.scrollTo({ top: targetY, behavior: 'smooth' });
-            }
-          };
-          if (btn) btn.addEventListener('click', handler);
-          return { btn, handler };
-        });
-
-        return () => {
-          clickHandlers.forEach(({ btn, handler }) => btn && btn.removeEventListener('click', handler));
-        };
-      }
     });
 
     // TABLET & MOBILE: Vertical Story Chapter Reveals
@@ -837,7 +804,7 @@
       });
     });
 
-    // Venue card & RSVP card subtle elevation
+    // Venue card subtle elevation
     gsap.fromTo('.venue-card',
       { y: 36, opacity: 0 },
       {
@@ -847,21 +814,6 @@
         ease: 'power3.out',
         scrollTrigger: {
           trigger: '.venue-card',
-          start: 'top 85%',
-          once: true
-        }
-      }
-    );
-
-    gsap.fromTo('.rsvp-card',
-      { y: 32, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.rsvp-card',
           start: 'top 85%',
           once: true
         }
@@ -984,7 +936,7 @@
     document.addEventListener('mouseenter', () => cursor.classList.remove('is-hidden'));
 
     document.addEventListener('mouseover', (e) => {
-      const target = e.target.closest('a, button, .choice, .g-btn, .exhibit-name');
+      const target = e.target.closest('a, button, .g-btn');
       if (!target) {
         cursor.classList.remove('is-hover', 'is-view');
         if (label) label.textContent = '';

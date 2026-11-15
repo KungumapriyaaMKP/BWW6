@@ -84,7 +84,7 @@
       whatsapp: ''
     },
     audio: {
-      src: 'assets/audio/nadaswaram.mp3'
+      src: 'assets/audio/bg-music.mp3'
     }
   };
 
